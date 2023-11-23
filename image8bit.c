@@ -172,6 +172,17 @@ Image ImageCreate(int width, int height, uint8 maxval) { ///
   assert (height >= 0);
   assert (0 < maxval && maxval <= PixMax);
   // Insert your code here!
+  Image p_image = (Image)malloc(sizeof(p_image));
+  assert(p_image != NULL);
+  p_image->pixel = (uint8*)malloc(sizeof(uint8)*width*height);
+  if(p_image->pixel == NULL){
+    free(p_image);
+    return NULL;
+  }
+  p_image->height = height;
+  p_image->width = width;
+  p_image->maxval = (int)maxval;
+  return p_image;
 }
 
 /// Destroy the image pointed to by (*imgp).
@@ -182,6 +193,7 @@ Image ImageCreate(int width, int height, uint8 maxval) { ///
 void ImageDestroy(Image* imgp) { ///
   assert (imgp != NULL);
   // Insert your code here!
+  
 }
 
 
