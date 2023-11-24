@@ -309,6 +309,8 @@ int ImageMaxval(Image img) { ///
 void ImageStats(Image img, uint8* min, uint8* max) { ///
   assert (img != NULL);
   // Insert your code here!
+  
+
 }
 
 /// Check if pixel position (x,y) is inside img.
@@ -373,11 +375,6 @@ void ImageSetPixel(Image img, int x, int y, uint8 level) { ///
 void ImageNegative(Image img) { ///
   assert (img != NULL);
   // Insert your code here!
-  int numPixel = img->height*img->width; //Determinação do número total de pixeis da imagem
-  for(int i = 0; i < numPixel; i++){
-    img->pixel[i] = img->maxval - img->pixel[i]; // Alteracao das cores pelo complementar
-  }
-
 }
 
 /// Apply threshold to image.
