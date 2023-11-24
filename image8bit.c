@@ -172,7 +172,7 @@ Image ImageCreate(int width, int height, uint8 maxval) { ///
   assert (height >= 0);
   assert (0 < maxval && maxval <= PixMax);
   // Insert your code here!
-  Image p_image = (Image)malloc(sizeof(p_image));
+  Image p_image = (Image)malloc(sizeof(*p_image));
   assert(p_image != NULL);
   p_image->pixel = (uint8*)malloc(sizeof(uint8)*width*height);
   if(p_image->pixel == NULL){
@@ -321,6 +321,7 @@ int ImageValidPos(Image img, int x, int y) { ///
 int ImageValidRect(Image img, int x, int y, int w, int h) { ///
   assert (img != NULL);
   // Insert your code here!
+  return 0;
 }
 
 /// Pixel get & set operations
@@ -417,6 +418,7 @@ void ImageBrighten(Image img, double factor) { ///
 Image ImageRotate(Image img) { ///
   assert (img != NULL);
   // Insert your code here!
+  return NULL;
 }
 
 /// Mirror an image = flip left-right.
@@ -429,6 +431,7 @@ Image ImageRotate(Image img) { ///
 Image ImageMirror(Image img) { ///
   assert (img != NULL);
   // Insert your code here!
+  return NULL;
 }
 
 /// Crop a rectangular subimage from img.
@@ -447,6 +450,7 @@ Image ImageCrop(Image img, int x, int y, int w, int h) { ///
   assert (img != NULL);
   assert (ImageValidRect(img, x, y, w, h));
   // Insert your code here!
+  return NULL;
 }
 
 
@@ -484,6 +488,7 @@ int ImageMatchSubImage(Image img1, int x, int y, Image img2) { ///
   assert (img2 != NULL);
   assert (ImageValidPos(img1, x, y));
   // Insert your code here!
+  return 0;
 }
 
 /// Locate a subimage inside another image.
@@ -494,6 +499,7 @@ int ImageLocateSubImage(Image img1, int* px, int* py, Image img2) { ///
   assert (img1 != NULL);
   assert (img2 != NULL);
   // Insert your code here!
+  return 0;
 }
 
 
