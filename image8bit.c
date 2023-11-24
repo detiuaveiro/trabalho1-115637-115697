@@ -173,7 +173,7 @@ Image ImageCreate(int width, int height, uint8 maxval) { ///
   assert (0 < maxval && maxval <= PixMax);
   // Insert your code here!
   Image p_image = (Image)malloc(sizeof(*p_image));
-  assert(p_image != NULL);
+  if(p_image == NULL) return NULL;
   p_image->pixel = (uint8*)malloc(sizeof(uint8)*width*height);
   if(p_image->pixel == NULL){
     free(p_image);
@@ -452,7 +452,24 @@ void ImageBrighten(Image img, double factor) { ///
 Image ImageRotate(Image img) { ///
   assert (img != NULL);
   // Insert your code here!
-  return NULL;
+  Image imgRotate = ImageCreate(img->height, img->width, img->maxval);
+  if (imgRotate == NULL){
+    return NULL;
+  }
+  int width = img->width;
+  int height = img->height;
+  uint8 aux;
+  int indx1;
+  int indx2;
+  for(int x = 0; x < width; x++){
+    for(int y = 0; y < height; y++){
+      indx1 = G(img, x, y);
+      indx2 = G(imgRotate, height-1-y, x);
+      imgRotate->pixel[indx2] = img->pixel[indx1];
+    }
+  }
+
+  return imgRotate;
 }
 
 /// Mirror an image = flip left-right.
@@ -465,7 +482,25 @@ Image ImageRotate(Image img) { ///
 Image ImageMirror(Image img) { ///
   assert (img != NULL);
   // Insert your code here!
-  return NULL;
+  Image imgMirror = ImageCreate(img->width, img->height, img->maxval);
+  if (imgMirror == NULL){
+    return NULL;
+  }
+  int width = imgMirror->width;
+  int height = imgMirror->height;
+  uint8 aux;
+  int indx1;
+  int indx2;
+  for (int y = 0; y < height; y++){
+    for (int x = 0; x < width/2; x++){
+      indx1 = G(imgMirror, x, y);
+      indx2 = G(imgMirror, width-1-x, y);
+      aux = imgMirror->pixel[indx1];
+      imgMirror->pixel[indx1] = imgMirror->pixel[indx2];
+      imgMirror->pixel[indx2] = aux;
+    }
+  }
+  return imgMirror;
 }
 
 /// Crop a rectangular subimage from img.
