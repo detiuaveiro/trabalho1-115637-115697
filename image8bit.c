@@ -309,8 +309,24 @@ int ImageMaxval(Image img) { ///
 void ImageStats(Image img, uint8* min, uint8* max) { ///
   assert (img != NULL);
   // Insert your code here!
-  
+  *min = img->pixel[0]; //Inicializar no primeiro pixel
+  *max = img->pixel[0];
+  int size = ImageNumPixels(img);
+  for (int i = 0; i < size ; i++) {
+    if(*min < img->pixel[i]) {
+      *min = img->pixel[i];
+    }
 
+    if (*max > img->pixel[i]) {
+      *max = img->pixel[i];
+    }
+
+    if (*min == 0 && *max == img->maxval) {
+      break;
+    }
+  }
+  
+  return;
 }
 
 /// Check if pixel position (x,y) is inside img.
@@ -375,14 +391,11 @@ void ImageSetPixel(Image img, int x, int y, uint8 level) { ///
 void ImageNegative(Image img) { ///
   assert (img != NULL);
   // Insert your code here!
-<<<<<<< HEAD
   int numPixel = ImageNumPixels(img); //Determinação do número total de pixeis da imagem
   for(int i = 0; i < numPixel; i++){
     img->pixel[i] = img->maxval - img->pixel[i]; // Alteracao das cores pelo complementar
   }
 
-=======
->>>>>>> refs/remotes/origin/main
 }
 
 /// Apply threshold to image.
