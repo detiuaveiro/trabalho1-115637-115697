@@ -375,14 +375,11 @@ void ImageSetPixel(Image img, int x, int y, uint8 level) { ///
 void ImageNegative(Image img) { ///
   assert (img != NULL);
   // Insert your code here!
-<<<<<<< HEAD
   int numPixel = ImageNumPixels(img); //Determinação do número total de pixeis da imagem
   for(int i = 0; i < numPixel; i++){
     img->pixel[i] = img->maxval - img->pixel[i]; // Alteracao das cores pelo complementar
   }
 
-=======
->>>>>>> refs/remotes/origin/main
 }
 
 /// Apply threshold to image.
@@ -405,6 +402,7 @@ void ImageBrighten(Image img, double factor) { ///
   assert (img != NULL);
   // ? assert (factor >= 0.0);
   // Insert your code here!
+
 }
 
 
