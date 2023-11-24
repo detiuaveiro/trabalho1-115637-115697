@@ -193,7 +193,10 @@ Image ImageCreate(int width, int height, uint8 maxval) { ///
 void ImageDestroy(Image* imgp) { ///
   assert (imgp != NULL);
   // Insert your code here!
-  
+  free((*imgp)->pixel);
+  (*imgp)->pixel = NULL;
+  free(*imgp);
+  *imgp=NULL;
 }
 
 
@@ -333,6 +336,7 @@ int ImageValidRect(Image img, int x, int y, int w, int h) { ///
 static inline int G(Image img, int x, int y) {
   int index;
   // Insert your code here!
+  index = x + y*(img->width);
   assert (0 <= index && index < img->width*img->height);
   return index;
 }
