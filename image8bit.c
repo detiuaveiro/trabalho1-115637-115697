@@ -373,7 +373,7 @@ void ImageSetPixel(Image img, int x, int y, uint8 level) { ///
 void ImageNegative(Image img) { ///
   assert (img != NULL);
   // Insert your code here!
-  int numPixel = img->height*img->width; //Determinação do número total de pixeis da imagem
+  int numPixel = ImageNumPixels(img); //Determinação do número total de pixeis da imagem
   for(int i = 0; i < numPixel; i++){
     img->pixel[i] = img->maxval - img->pixel[i]; // Alteracao das cores pelo complementar
   }
@@ -386,6 +386,10 @@ void ImageNegative(Image img) { ///
 void ImageThreshold(Image img, uint8 thr) { ///
   assert (img != NULL);
   // Insert your code here!
+  int numPixel = ImageNumPixels(img); //Determinação do número total de pixeis da imagem
+  for(int i = 0; i < numPixel; i++){
+    img->pixel[i] = (img->pixel[i] < thr) ? 0 : img->maxval; // Alteracao das cores
+  }
 }
 
 /// Brighten image by a factor.
