@@ -418,7 +418,12 @@ void ImageBrighten(Image img, double factor) { ///
   assert (img != NULL);
   // ? assert (factor >= 0.0);
   // Insert your code here!
-
+  assert(factor >= 0.0);
+  int numPixel = ImageNumPixels(img); //Determinação do número total de pixeis da imagem
+  for(int i = 0; i < numPixel; i++){
+    img->pixel[i] = (img->pixel[i]*factor <= img->maxval) ? (uint8)(img->pixel[i]*factor) : img->maxval; // Alteracao das cores
+  }
+  return;
 }
 
 
