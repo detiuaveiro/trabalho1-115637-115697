@@ -373,6 +373,11 @@ void ImageSetPixel(Image img, int x, int y, uint8 level) { ///
 void ImageNegative(Image img) { ///
   assert (img != NULL);
   // Insert your code here!
+  int numPixel = img->height*img->width; //Determinação do número total de pixeis da imagem
+  for(int i = 0; i < numPixel; i++){
+    img->pixel[i] = img->maxval - img->pixel[i]; // Alteracao das cores pelo complementar
+  }
+
 }
 
 /// Apply threshold to image.
@@ -514,3 +519,9 @@ void ImageBlur(Image img, int dx, int dy) { ///
   //Comments to test my first commit
 }
 
+int ImageNumPixels(Image img){
+  assert (img != NULL);
+  // Insert your code here!
+  int numPixel = img->height*img->width; //Determinação do número total de pixeis da imagem
+  return numPixel;
+}
