@@ -519,7 +519,20 @@ Image ImageCrop(Image img, int x, int y, int w, int h) { ///
   assert (img != NULL);
   assert (ImageValidRect(img, x, y, w, h));
   // Insert your code here!
-  return NULL;
+  Image imgCrop = ImageCreate(w,h,img->maxval);
+  if (imgCrop == NULL) return NULL;
+  int h_y = y+h;
+  int w_x = x+w;
+  int indx;
+  int indx2 = 0;
+  for(y; y < h_y; y++) {
+    for(x; x < w_x; x++) {
+      indx = G(img, x, y);
+      imgCrop->pixel[indx2] = img->pixel[indx];
+      indx2++;
+    }
+  }
+  return imgCrop;
 }
 
 
@@ -534,6 +547,17 @@ void ImagePaste(Image img1, int x, int y, Image img2) { ///
   assert (img2 != NULL);
   assert (ImageValidRect(img1, x, y, img2->width, img2->height));
   // Insert your code here!
+  int h_y = y+img2->height;
+  int w_x = x+ img2->width;
+  int indx;
+  int indx2 = 0;
+  for(y; y < h_y; y++) {
+    for(x; x < w_x; x++) {
+      indx = G(img1, x, y);
+      img1->pixel[indx] = img2->pixel[indx2];
+      indx2++;
+    }
+  }
 }
 
 /// Blend an image into a larger image.
@@ -547,6 +571,25 @@ void ImageBlend(Image img1, int x, int y, Image img2, double alpha) { ///
   assert (img2 != NULL);
   assert (ImageValidRect(img1, x, y, img2->width, img2->height));
   // Insert your code here!
+  int h_y = y+img2->height;
+  int w_x = x+ img2->width;
+  int indx;
+  int indx2 = 0;
+  int pixel;
+  for(y; y < h_y; y++) {
+    for(x; x < w_x; x++) {
+      indx = G(img1, x, y);
+      pixel = alpha*(img2->pixel[indx2]) + img1->pixel[indx];
+      if (pixel > img1->maxval) {
+        pixel = img1->maxval;
+      }
+      if (pixel < 0) {
+        pixel = 0;
+      }
+      img1->pixel[indx] = (uint8)pixel;
+      indx2++;
+    }
+  }
 }
 
 /// Compare an image to a subimage of a larger image.
