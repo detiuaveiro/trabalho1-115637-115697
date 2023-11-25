@@ -605,6 +605,30 @@ int ImageLocateSubImage(Image img1, int* px, int* py, Image img2) { ///
 void ImageBlur(Image img, int dx, int dy) { ///
   // Insert your code here!
   //Comments to test my first commit
+  double pixel;
+  double numPixel;
+  uint8 pixelBlur[img->height*img->width];
+  for(int y = 0; y < img->height; y++) {
+    for(int x = 0; x < img->width; x++) {
+      pixel = 0;
+      numPixel = 0;
+      for(int y1 = y-dy; y1 <= y+dy; y1++) {
+        for(int x1 = x-dx; x1 <= x+dx; x1++) {
+          if( y1 >= 0 && y1 < img->height && x1 >= 0 && x1 < img->width) {
+            pixel += ImageGetPixel(img, x1, y1);
+            numPixel++;
+          }
+        }
+      }
+      pixelBlur[G(img, x, y)]=(uint8)(pixel/numPixel+0.5);
+    }
+  }
+
+  for(int y = 0; y < img->height; y++) {
+    for(int x = 0; x < img->width; x++) {
+      ImageSetPixel(img, x, y, pixelBlur[G(img, x, y)]);
+    }
+  }
 }
 
 int ImageNumPixels(Image img){
