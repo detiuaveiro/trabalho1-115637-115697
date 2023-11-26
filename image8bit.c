@@ -148,7 +148,8 @@ void ImageInit(void) { ///
   InstrName[0] = "pixmem";  // InstrCount[0] will count pixel array acesses
   // Name other counters here...
   InstrName[1] = "numcmp";  // InstrCount[1] will count comparisons
-  InstrName[2] = "numattr"; // InstrCount[0] will count value attribution
+  InstrName[2] = "numattr"; // InstrCount[2] will count value attribution
+  InstrName[3] = "numiter"; //InstrCount[3] will count iterection
 }
 
 // Macros to simplify accessing instrumentation counters:
@@ -156,6 +157,7 @@ void ImageInit(void) { ///
 // Add more macros here...
 #define NUMCMP InstrCount[1]
 #define NUMATTR InstrCount[2]
+#define NUMITER InstrCount[3]
 
 int ImageNumPixels(Image img);
 // TIP: Search for PIXMEM or InstrCount to see where it is incremented!
@@ -581,14 +583,22 @@ int ImageMatchSubImage(Image img1, int x, int y, Image img2) { ///
 /// If a match is found, returns 1 and matching position is set in vars (*px, *py).
 /// If no match is found, returns 0 and (*px, *py) are left untouched.
 int ImageLocateSubImage(Image img1, int* px, int* py, Image img2) { ///
+  //NUMCMP = 0;
+  //NUMATTR = 0;
   assert (img1 != NULL);
   assert (img2 != NULL);
   // Insert your code here!
-  int x = img1->width - img2->width;
-  int y = img1->height -img2->height;
+  assert(img2->height <= img1->height && img2->width <= img1->width);
+  NUMATTR += 2;
+  int x = img1->width; //- img2->width;
+  int y = img1->height; //-img2->height;
   for (int y1 = 0; y1 < y; y1++){
+    NUMITER++;
     for (int x1 = 0; x1 < x; x1++){
+      NUMITER++;
+      NUMCMP++;
       if (ImageMatchSubImage(img1, x1, y1, img2)){
+        NUMATTR += 2;
         *px = x1;
         *py = y1;
         return 1;
@@ -607,28 +617,41 @@ int ImageLocateSubImage(Image img1, int* px, int* py, Image img2) { ///
 /// The image is changed in-place.
 void ImageBlur(Image img, int dx, int dy) { ///
   // Insert your code here!
+  //NUMCMP = 0;
+  //NUMATTR = 0;
   double pixel;
   double numPixel;
+  NUMATTR++;
   uint8 *pixelBlur = (uint8*)malloc(sizeof(uint8)*img->width*img->height);
   assert(pixelBlur != NULL);
   for(int y = 0; y < img->height; y++) {
+      NUMITER++;
     for(int x = 0; x < img->width; x++) {
+      NUMITER++;
+      NUMATTR += 2;
       pixel = 0;
       numPixel = 0;
       for(int y1 = y-dy; y1 <= y+dy; y1++) {
+        NUMITER++;
         for(int x1 = x-dx; x1 <= x+dx; x1++) {
-          if( y1 >= 0 && y1 < img->height && x1 >= 0 && x1 < img->width) {
+          NUMITER++;
+          NUMCMP++;
+          if( ImageValidPos(img, x1, y1)) {
+            NUMATTR += 2;
             pixel += ImageGetPixel(img, x1, y1);
             numPixel++;
           }
         }
       }
+      NUMATTR++;
       pixelBlur[G(img, x, y)]=(uint8)(pixel/numPixel+0.5);
     }
   }
 
   for(int y = 0; y < img->height; y++) {
+    NUMITER++;
     for(int x = 0; x < img->width; x++) {
+      NUMITER++;
       ImageSetPixel(img, x, y, pixelBlur[G(img, x, y)]);
     }
   }
