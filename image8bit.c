@@ -609,7 +609,8 @@ void ImageBlur(Image img, int dx, int dy) { ///
   // Insert your code here!
   double pixel;
   double numPixel;
-  uint8 pixelBlur[img->height*img->width];
+  uint8 *pixelBlur = (uint8*)malloc(sizeof(uint8)*img->width*img->height);
+  assert(pixelBlur != NULL);
   for(int y = 0; y < img->height; y++) {
     for(int x = 0; x < img->width; x++) {
       pixel = 0;
