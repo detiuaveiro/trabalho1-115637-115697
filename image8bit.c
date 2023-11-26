@@ -147,12 +147,15 @@ void ImageInit(void) { ///
   InstrCalibrate();
   InstrName[0] = "pixmem";  // InstrCount[0] will count pixel array acesses
   // Name other counters here...
-  
+  InstrName[1] = "numcmp";  // InstrCount[1] will count comparisons
+  InstrName[2] = "numattr"; // InstrCount[0] will count value attribution
 }
 
 // Macros to simplify accessing instrumentation counters:
 #define PIXMEM InstrCount[0]
 // Add more macros here...
+#define NUMCMP InstrCount[1]
+#define NUMATTR InstrCount[2]
 
 int ImageNumPixels(Image img);
 // TIP: Search for PIXMEM or InstrCount to see where it is incremented!
@@ -604,7 +607,6 @@ int ImageLocateSubImage(Image img1, int* px, int* py, Image img2) { ///
 /// The image is changed in-place.
 void ImageBlur(Image img, int dx, int dy) { ///
   // Insert your code here!
-  //Comments to test my first commit
   double pixel;
   double numPixel;
   uint8 pixelBlur[img->height*img->width];
@@ -629,11 +631,11 @@ void ImageBlur(Image img, int dx, int dy) { ///
       ImageSetPixel(img, x, y, pixelBlur[G(img, x, y)]);
     }
   }
+  free(pixelBlur);
 }
 
 int ImageNumPixels(Image img){
   assert (img != NULL);
-  // Insert your code here!
   int numPixel = img->height*img->width; //Determinação do número total de pixeis da imagem
   return numPixel;
 }
